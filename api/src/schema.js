@@ -15,7 +15,8 @@ const typeDefs = gql`
 
   type Pokemon {
     id: ID!
-    generation_id: Int!
+    gender: PokemonGender!
+    name: String!
     trainer: User!
     img: String!
     createdAt: Int!
@@ -23,11 +24,11 @@ const typeDefs = gql`
 
   input NewPokemonInput {
     name: String!
-    type: PokemonGender!
+    gender: PokemonGender!
   }
 
   input PokemonsInput {
-    type: PokemonGender
+    gender: PokemonGender
   }
 
   type Query {

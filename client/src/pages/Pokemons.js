@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 
-//import PetsList from "../components/PetsList";
-//import NewPetModal from "../components/NewPetModal";
-// import Loader from "../components/Loader";
+import Loader from "../components/Loader";
+import NewPokemonModal from "../components/NewPokemonModal";
+import PokemonsList from "../components/PokemonsList";
 import gql from "graphql-tag";
 
 const ALL_POKEMONS = gql`
@@ -17,52 +17,38 @@ const ALL_POKEMONS = gql`
   }
 `;
 export default function Pokemons() {
+  const [modal, setModal] = useState(false);
+  const { data, loading, error } = useQuery(ALL_POKEMONS);
+  const onSubmit = (input) => {
+    setModal(false);
+  };
+
+  if (loading) {
+    return <Loader />;
+  }
+
+  if (error) {
+    return <p>error!</p>;
+  }
+
+  if (modal) {
+    return (
+      <NewPokemonModal onSubmit={onSubmit} onCancel={() => setModal(false)} />
+    );
+  }
   return (
-    <div>
+    <div className="page pokemons-page">
       <section>
         <div className="col-xs-10">
-          <h1>Pokemons</h1>
+          <h1>Pokemon Center</h1>
         </div>
+        <div className="col-xs-2">
+          <button onClick={() => setModal(true)}>new Pokemon</button>
+        </div>
+      </section>
+      <section>
+        <PokemonsList pokemons={data.pokemons} />
       </section>
     </div>
   );
 }
-// export default function Pokemons() {
-//   const [modal, setModal] = useState(false);
-//   const { data, loading, error } = useQuery(ALL_POKEMONS);
-
-//   const onSubmit = (input) => {
-//     setModal(false);
-//   };
-
-//   if (loading) {
-//     return <Loader />
-//   }
-
-//   if (error) {
-//     return <p>error!</p>
-//   }
-
-//   if (modal) {
-//     return <NewPetModal onSubmit={onSubmit} onCancel={() => setModal(false)} />;
-//   }
-
-//   return (
-//     <div className="page pets-page">
-//       <section>
-//         <div className="row betwee-xs middle-xs">
-//           <div className="col-xs-10">
-//             <h1>Pokemons</h1>
-//           </div>
-
-//           <div className="col-xs-2">
-//             <button onClick={() => setModal(true)}>new pet</button>
-//           </div>
-//         </div>
-//       </section>
-//       <section>
-//         <PetsList pets={data.pets} />
-//       </section>
-//     </div>
-//   );
-// }
