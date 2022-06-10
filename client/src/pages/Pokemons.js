@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 
-import { ALL } from "dns";
 import Loader from "../components/Loader";
 import NewPokemonModal from "../components/NewPokemonModal";
 import PokemonBox from "../components/PokemonBox";
-import PokemonsList from "../components/PokemonsList";
-import { createOperation } from "apollo-link";
 import gql from "graphql-tag";
 
 const POKEMON_DETAILS = gql`
