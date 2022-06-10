@@ -1,5 +1,5 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
+import React from 'react'
 import { withRouter } from 'react-router'
 
 const Header = () =>
@@ -7,7 +7,7 @@ const Header = () =>
     <div className="row">
       <div className="col-xs">
         <Link to="/" >
-          Home
+          Pokemon Center
         </Link>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 
+import { ALL } from "dns";
 import Loader from "../components/Loader";
 import NewPokemonModal from "../components/NewPokemonModal";
 import PokemonsList from "../components/PokemonsList";
@@ -30,7 +31,15 @@ const ADD_POKEMON = gql`
 export default function Pokemons() {
   const [modal, setModal] = useState(false);
   const { data, loading, error } = useQuery(ALL_POKEMONS);
-  const [createPokemon, newPokemon] = useMutation(ADD_POKEMON);
+  const [createPokemon, newPokemon] = useMutation(ADD_POKEMON, {
+    update(cache, {data:{addPokemon}}) {
+      const data = cache.readQuery({query: ALL_POKEMONS})
+      cache.writeQuery({
+        query: ALL_POKEMONS,
+        data: {pokemons: [addPokemon, ...data.pokemons]}
+      })
+    }
+  });
 
   const onSubmit = (input) => {
     setModal(false)
@@ -55,9 +64,6 @@ export default function Pokemons() {
   return (
     <div className="page pokemons-page">
       <section>
-        <div className="col-xs-10">
-          <h1>Pokemon Center</h1>
-        </div>
         <div className="col-xs-2">
           <button onClick={() => setModal(true)}>new Pokemon</button>
         </div>
