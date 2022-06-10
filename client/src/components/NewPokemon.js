@@ -3,9 +3,8 @@ import React, {useState} from 'react'
 import Select from 'react-select'
 
 const options = [
-  { value: 'MALE', label: 'Male ♂' },
-  { value: 'FEMALE', label: 'Female ♀' },
-  { value: 'UNKNOWN', label: 'Unknown 𖡄'}
+  { value: 'MALE', label: 'MALE' },
+  { value: 'FEMALE', label: 'FEMALE' }
 ]
 
 export default function NewPokemon({onSubmit, onCancel}) {

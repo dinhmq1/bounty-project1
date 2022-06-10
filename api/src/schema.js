@@ -4,7 +4,6 @@ const typeDefs = gql`
   enum PokemonGender {
     MALE
     FEMALE
-    UNKNOWN
   }
 
   type User {

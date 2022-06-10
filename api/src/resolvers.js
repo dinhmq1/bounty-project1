@@ -23,9 +23,7 @@ module.exports = {
     img(pokemon) {
       return pokemon.gender === "MALE"
         ? "https://assets.pokemon.com/assets/cms2/img/pokedex/full/032.png"
-        : "https://assets.pokemon.com/assets/cms2/img/pokedex/full/029.png"
-        ? pokemon.gender === "UNKNOWN"
-        : "https://assets.pokemon.com/assets/cms2/img/pokedex/full/081.png";
+        : "https://assets.pokemon.com/assets/cms2/img/pokedex/full/029.png";
     },
   },
   User: {

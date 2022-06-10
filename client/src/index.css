@@ -116,10 +116,14 @@ button.error, .button.error {
 }
 
 figure {
-  width: 200px;
-  height: 200px;
+  width: auto;
+  height: auto;
 }
 
 figure img {
   width: 100%;
+}
+
+.pokemon-labelName {
+  text-align: center;
 }
