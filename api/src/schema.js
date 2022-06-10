@@ -21,7 +21,7 @@ const typeDefs = gql`
     createdAt: Int!
   }
 
-  input NewPokemonInput {
+  input AddPokemonInput {
     name: String!
     gender: PokemonGender!
   }
@@ -37,7 +37,7 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    addPokemon(input: NewPokemonInput!): Pokemon!
+    addPokemon(input: AddPokemonInput!): Pokemon!
   }
 `;
 

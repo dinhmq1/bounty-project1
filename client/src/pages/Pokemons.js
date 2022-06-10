@@ -4,6 +4,7 @@ import { useMutation, useQuery } from "@apollo/react-hooks";
 import Loader from "../components/Loader";
 import NewPokemonModal from "../components/NewPokemonModal";
 import PokemonsList from "../components/PokemonsList";
+import { createOperation } from "apollo-link";
 import gql from "graphql-tag";
 
 const ALL_POKEMONS = gql`
@@ -16,18 +17,33 @@ const ALL_POKEMONS = gql`
     }
   }
 `;
+const ADD_POKEMON = gql`
+  mutation AddAPokemon($newPokemon: AddPokemonInput!) {
+    addPokemon(input: $newPokemon) {
+      id
+      name
+      gender
+      img
+    }
+  }
+`;
 export default function Pokemons() {
   const [modal, setModal] = useState(false);
   const { data, loading, error } = useQuery(ALL_POKEMONS);
+  const [createPokemon, newPokemon] = useMutation(ADD_POKEMON);
+
   const onSubmit = (input) => {
-    setModal(false);
+    setModal(false)
+    createPokemon({
+      variables: {newPokemon: input}
+    });
   };
 
-  if (loading) {
+  if (loading || newPokemon.loading) {
     return <Loader />;
   }
 
-  if (error) {
+  if (error || newPokemon.error) {
     return <p>error!</p>;
   }
 
