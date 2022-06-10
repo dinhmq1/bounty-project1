@@ -4,18 +4,17 @@ import { useMutation, useQuery } from "@apollo/react-hooks";
 import { ALL } from "dns";
 import Loader from "../components/Loader";
 import NewPokemonModal from "../components/NewPokemonModal";
+import PokemonBox from "../components/PokemonBox";
 import PokemonsList from "../components/PokemonsList";
 import { createOperation } from "apollo-link";
 import gql from "graphql-tag";
 
-const ALL_POKEMONS = gql`
-  query AllPokemons {
-    pokemons {
-      id
-      name
-      gender
-      img
-    }
+const POKEMON_DETAILS = gql`
+  fragment PokemonDetails on Pokemon {
+    id
+    name
+    gender
+    img
   }
 `;
 const ADD_POKEMON = gql`
@@ -28,33 +27,46 @@ const ADD_POKEMON = gql`
     }
   }
 `;
+const GET_POKEMONS = gql`
+  query pokemonsList($input: PokemonsInput) {
+    pokemons(input: $input) {
+      ...PokemonDetails
+    }
+  }
+  ${POKEMON_DETAILS}
+`;
 export default function Pokemons() {
   const [modal, setModal] = useState(false);
-  const { data, loading, error } = useQuery(ALL_POKEMONS);
+  const pokemons = useQuery(GET_POKEMONS);
+
   const [createPokemon, newPokemon] = useMutation(ADD_POKEMON, {
-    update(cache, {data:{addPokemon}}) {
-      const data = cache.readQuery({query: ALL_POKEMONS})
+    update(cache, { data: { addPokemon } }) {
+      const { pokemons } = cache.readQuery({ query: GET_POKEMONS });
+
       cache.writeQuery({
-        query: ALL_POKEMONS,
-        data: {pokemons: [addPokemon, ...data.pokemons]}
-      })
-    }
+        query: GET_POKEMONS,
+        data: { pokemons: [addPokemon, ...pokemons] },
+      });
+    },
   });
 
+  if (pokemons.loading) return <Loader />;
+  if (pokemons.error || newPokemon.error) return <p>ERROR</p>;
+
   const onSubmit = (input) => {
-    setModal(false)
+    setModal(false);
     createPokemon({
-      variables: {newPokemon: input}
+      variables: { newPokemon: input },
     });
   };
 
-  if (loading || newPokemon.loading) {
-    return <Loader />;
-  }
-
-  if (error || newPokemon.error) {
-    return <p>error!</p>;
-  }
+  const pokemonsList = pokemons.data.pokemons.map((pokemon) => (
+    <div className="col-xs-12 col-md-4 col" key={pokemon.id}>
+      <div className="box">
+        <PokemonBox pokemon={pokemon} />
+      </div>
+    </div>
+  ));
 
   if (modal) {
     return (
@@ -65,11 +77,11 @@ export default function Pokemons() {
     <div className="page pokemons-page">
       <section>
         <div className="col-xs-2">
-          <button onClick={() => setModal(true)}>new Pokemon</button>
+          <button onClick={() => setModal(true)}>Add Pokemon</button>
         </div>
       </section>
       <section>
-        <PokemonsList pokemons={data.pokemons} />
+        <div className="row">{pokemonsList}</div>
       </section>
     </div>
   );

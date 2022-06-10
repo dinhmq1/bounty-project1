@@ -25,7 +25,7 @@ export default function NewPokemon({onSubmit, onCancel}) {
 
   return (
     <div className="new-pokemon page">
-      <h1>New Pokemon</h1>
+      <h1>Add Pokemon</h1>
       <div className="box">
         <form onSubmit={submit}>
           <Select
