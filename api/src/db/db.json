@@ -1,0 +1,26 @@
+{
+  "user": {
+    "id": "da7438df99f64",
+    "username": "mike dinh"
+  },
+  "pokemon": [
+    {
+      "id": "e5339fc65",
+      "createdAt": 1625311355,
+      "name": "Nidoran",
+      "gender": "FEMALE"
+    },
+    {
+      "id": "f2b712affed",
+      "createdAt": 1661512497,
+      "name": "Nidoran",
+      "gender": "MALE"
+    },
+    {
+      "id": "612dbbee96e",
+      "createdAt": 1650571435,
+      "name": "Magnemite",
+      "gender": "UNKNOWN"
+    }
+  ]
+}
